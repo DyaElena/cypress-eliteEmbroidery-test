@@ -124,7 +124,7 @@ describe("register tests", () => {
       .should("contain", "City must be between 2 and 128 characters!");
   });
 
-  it.only("verifies invalid registration - did't accept Privacy Policy", () => {
+  it("verifies invalid registration - didn't accept Privacy Policy", () => {
     cy.get(".well > .btn-orange").click();
 
     cy.get("#input-firstname").type("Kate");
@@ -144,6 +144,51 @@ describe("register tests", () => {
     cy.get("[class='alert alert-danger alert-dismissible']").should(
       "contain",
       "Warning: You must agree to the Privacy Policy!"
+    );
+  });
+
+  it("verifies valid registration", () => {
+    cy.get(".well > .btn-orange").click();
+
+    cy.get("#input-firstname").type("Kate");
+    cy.get("#input-lastname").type("Miller");
+    cy.get("#input-company").type("A cafe");
+    cy.get("#input-password").type("KateM123");
+    cy.get("#input-confirm").type("KateM123");
+    cy.get("#input-email").type("hellothere1599@gmail.com");
+    cy.get("#input-telephone").type("12395566770");
+    cy.get("#input-address-1").type("Cable St.");
+    cy.get("#input-postcode").type("123456");
+    cy.get("select").eq(1).select("195");
+    cy.get("#input-city").type("Barcelona");
+    cy.get("select").eq(2).select("2979", { force: true });
+    cy.get('[type="checkbox"]').check({ force: true });
+    cy.get(".pull-right > .btn").click({ force: true });
+
+    cy.get("h1").should("contain", "Trade Account - Pending");
+  });
+
+  it.only("verifies invalid registration - email already registered", () => {
+    cy.get(".well > .btn-orange").click();
+
+    cy.get("#input-firstname").type("Kate");
+    cy.get("#input-lastname").type("Miller");
+    cy.get("#input-company").type("A cafe");
+    cy.get("#input-password").type("KateM123");
+    cy.get("#input-confirm").type("KateM123");
+    cy.get("#input-email").type("hellothere1599@gmail.com");
+    cy.get("#input-telephone").type("12395566770");
+    cy.get("#input-address-1").type("Cable St.");
+    cy.get("#input-postcode").type("123456");
+    cy.get("select").eq(1).select("195");
+    cy.get("#input-city").type("Barcelona");
+    cy.get("select").eq(2).select("2979", { force: true });
+    cy.get('[type="checkbox"]').check({ force: true });
+    cy.get(".pull-right > .btn").click({ force: true });
+
+    cy.get("[class='alert alert-danger alert-dismissible']").should(
+      "contain",
+      "Warning: E-Mail Address is already registered!"
     );
   });
 });
