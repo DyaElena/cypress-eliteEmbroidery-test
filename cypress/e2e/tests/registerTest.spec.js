@@ -66,22 +66,84 @@ describe("register tests", () => {
     cy.contains("Please select a region / state!").should("be.visible");
   });
 
-  it.only("verifies invalid registration - passwords are different", () => {
+  it("verifies invalid registration - passwords are different", () => {
     cy.get(".well > .btn-orange").click();
 
     cy.get("#input-firstname").type("Kate");
     cy.get("#input-lastname").type("Miller");
+    cy.get("#input-company").type("A cafe");
     cy.get("#input-password").type("KateM123");
     cy.get("#input-confirm").type("KateM12");
     cy.get("#input-email").type("hellothere1599@gmail.com");
+    cy.get("#input-telephone").type("12395566770");
     cy.get("#input-address-1").type("Cable St.");
     cy.get("#input-postcode").type("123456");
-    cy.get("#input-country").type("spain({enter}");
+    cy.get("select").eq(1).select("195");
     cy.get("#input-city").type("Barcelona");
-    cy.get("#input-zone").type("huelva{enter}");
-    cy.get('[type="checkbox"]').click();
-    cy.get(".pull-right > .btn").click();
+    cy.get("select").eq(2).select("2979", { force: true });
+    cy.get('[type="checkbox"]').check({ force: true });
+    cy.get(".pull-right > .btn").click({ force: true });
 
-    cy.log("registered");
+    cy.get("#input-confirm")
+      .siblings()
+      .should("contain", "Password confirmation does not match password!");
+  });
+
+  it("verifies invalid registration - required fields (password, company, address, postcode, city) are too short", () => {
+    cy.get(".well > .btn-orange").click();
+
+    cy.get("#input-firstname").type("Kate");
+    cy.get("#input-lastname").type("Miller");
+    cy.get("#input-company").type("A");
+    cy.get("#input-password").type("Kat");
+    cy.get("#input-confirm").type("Kat");
+    cy.get("#input-email").type("hellothere1599@gmail.com");
+    cy.get("#input-telephone").type("12395566770");
+    cy.get("#input-address-1").type("St");
+    cy.get("#input-postcode").type("9");
+    cy.get("select").eq(1).select("195");
+    cy.get("#input-city").type("B");
+    cy.get("select").eq(2).select("2979", { force: true });
+    cy.get('[type="checkbox"]').check({ force: true });
+    cy.get(".pull-right > .btn").click({ force: true });
+
+    cy.get("#input-password")
+      .siblings()
+      .should("contain", "Password must be between 4 and 20 characters!");
+    cy.get("#input-company")
+      .siblings()
+      .should("contain", "Company must be between 3 and 128 characters!");
+    cy.get("#input-address-1")
+      .siblings()
+      .should("contain", "Address must be between 3 and 128 characters!");
+    // cy.get("#input-postcode")
+    //   .siblings()
+    //   .should("contain", "Postcode must be between 2 and 10 characters!"); // error message says this, when leave empty field, but when type 1 symbol, error message doesn't appear anymore.
+    cy.get("#input-city")
+      .siblings()
+      .should("contain", "City must be between 2 and 128 characters!");
+  });
+
+  it.only("verifies invalid registration - did't accept Privacy Policy", () => {
+    cy.get(".well > .btn-orange").click();
+
+    cy.get("#input-firstname").type("Kate");
+    cy.get("#input-lastname").type("Miller");
+    cy.get("#input-company").type("A cafe");
+    cy.get("#input-password").type("KateM123");
+    cy.get("#input-confirm").type("KateM123");
+    cy.get("#input-email").type("hellothere1599@gmail.com");
+    cy.get("#input-telephone").type("12395566770");
+    cy.get("#input-address-1").type("Cable St.");
+    cy.get("#input-postcode").type("123456");
+    cy.get("select").eq(1).select("195");
+    cy.get("#input-city").type("Barcelona");
+    cy.get("select").eq(2).select("2979", { force: true });
+    cy.get(".pull-right > .btn").click({ force: true });
+
+    cy.get("[class='alert alert-danger alert-dismissible']").should(
+      "contain",
+      "Warning: You must agree to the Privacy Policy!"
+    );
   });
 });
