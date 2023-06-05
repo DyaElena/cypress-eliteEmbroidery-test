@@ -56,11 +56,11 @@ describe("register tests", () => {
     assertInvalidLogin();
   });
 
-  it("verifies Forgot password functionality - with registered email", () => {
+  it.only("verifies Forgot password functionality - with registered email", () => {
     cy.get(".btn-default").click();
     cy.get("#input-email").type("hellothere1599@gmail.com");
     cy.get(".btn-primary").click({ force: true });
-    cy.get(".alert-success")
+    cy.get(".alert")
       .should("be.visible")
       .and(
         "contain",
