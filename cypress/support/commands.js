@@ -28,3 +28,41 @@ Cypress.on("uncaught:exception", (err, runnable) => {
   // failing the test
   return false;
 });
+
+Cypress.Commands.add(
+  "registerUser",
+  ({
+    firstName,
+    lastName,
+    company,
+    password,
+    confirmPassword,
+    email,
+    telephone,
+    address,
+    postcode,
+    city,
+    countryIndex,
+    zoneIndex,
+    acceptPrivacyPolicy,
+  }) => {
+    cy.get("#input-firstname").type(firstName);
+    cy.get("#input-lastname").type(lastName);
+    cy.get("#input-company").type(company);
+    cy.get("#input-password").type(password);
+    cy.get("#input-confirm").type(confirmPassword);
+    cy.get("#input-email").type(email);
+    cy.get("#input-telephone").type(telephone);
+    cy.get("#input-address-1").type(address);
+    cy.get("#input-postcode").type(postcode);
+    cy.get("select").eq(1).select(countryIndex.toString());
+    cy.get("#input-city").type(city);
+    cy.get("select").eq(2).select(zoneIndex.toString(), { force: true });
+
+    if (acceptPrivacyPolicy) {
+      cy.get('[type="checkbox"]').check({ force: true });
+    }
+
+    cy.get(".pull-right > .btn").click({ force: true });
+  }
+);
