@@ -1,4 +1,4 @@
-describe("register tests", () => {
+describe("Login tests", () => {
   beforeEach(() => {
     cy.visit("https://eliteembroidery.co.uk/");
     cy.contains("Login / Register").click();
@@ -56,7 +56,7 @@ describe("register tests", () => {
     assertInvalidLogin();
   });
 
-  it.only("verifies Forgot password functionality - with registered email", () => {
+  it("verifies Forgot password functionality - with registered email", () => {
     cy.get(".btn-default").click();
     cy.get("#input-email").type("hellothere1599@gmail.com");
     cy.get(".btn-primary").click({ force: true });
