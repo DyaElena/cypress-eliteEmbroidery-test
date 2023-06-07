@@ -1,4 +1,4 @@
-describe("register tests", () => {
+describe("Register tests", () => {
   beforeEach(() => {
     cy.visit("https://eliteembroidery.co.uk/");
     cy.contains("Login / Register").click();
@@ -163,7 +163,7 @@ describe("register tests", () => {
     cy.get("h1").should("contain", "Trade Account - Pending");
   });
 
-  it.only("verifies invalid registration - email already registered", () => {
+  it("verifies invalid registration - email already registered", () => {
     cy.get(".well > .btn-orange").click();
 
     cy.registerUser({

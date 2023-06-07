@@ -66,3 +66,15 @@ Cypress.Commands.add(
     cy.get(".pull-right > .btn").click({ force: true });
   }
 );
+
+Cypress.Commands.add("login", (username, password) => {
+  cy.session([username, password], () => {
+    cy.visit("/user-login/");
+    cy.get("#input-email").type("hellothere1599@gmail.com");
+    cy.get("#input-password").type("KateM123");
+    cy.get(".btn-primary").click();
+    cy.url().should("contain", "my-account/");
+
+    cy.visit("https://eliteembroidery.co.uk/my-account/");
+  });
+});
