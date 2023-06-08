@@ -21,7 +21,7 @@ describe("Account tests", () => {
   });
 
   it("verifies user Orders - empty spaces", () => {
-    cy.contains("Order History").click();
+    cy.contains("Order History").click({ force: true });
     cy.get("#content p").should(
       "contain",
       "You have not made any previous orders!"
