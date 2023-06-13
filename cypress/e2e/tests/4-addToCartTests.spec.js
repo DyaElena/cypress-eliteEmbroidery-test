@@ -11,6 +11,21 @@ describe("Account tests", () => {
     cy.visit("https://eliteembroidery.co.uk/my-account/");
   });
 
+  it.only("deletes items from the cart", () => {
+    cy.get("#site-header-cart").click();
+    cy.get(".header-dropdown-wrapper")
+      .eq(1)
+      .then((container) => {
+        const containerText = container.text();
+        if (!containerText.includes("View Products")) {
+          cy.contains("View Cart").click();
+          cy.get(".cart-item-remove").find("button").click();
+        } else {
+          cy.log("Cart is empty");
+        }
+      });
+  });
+
   it("verifies that item can be added to the cart", () => {
     cy.contains("T-Shirts & Vests").click();
     cy.get(".product").eq(0).click();
@@ -32,5 +47,11 @@ describe("Account tests", () => {
     cy.contains("S").click(); // click outside input box
     cy.get("#tm_add_to_cart").click();
     cy.get(".swal2-actions").should("be.visible");
+  });
+
+  it("increases and decreases amount in the cart, deletes item from the cart", () => {
+    cy.get("#site-header-cart").click();
+    cy.contains("View Cart").click();
+    cy.get(".cart-item-remove").each("delete");
   });
 });
